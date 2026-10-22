@@ -1,0 +1,53 @@
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+
+# Backups and temporary files
+*.bak
+*.old
+*.zip
+*.rar
+*.tar.gz
+*.tgz
+*.7z
+system_3.1.0_backup/
+php_old_8.1.6/
+php_8.1.6_backup/
+scratch/
+
+# Application cache and sessions
+application/cache/*
+!application/cache/index.html
+!application/cache/.htaccess
+application/cache/sessions/*
+!application/cache/sessions/index.html
+!application/cache/sessions/.htaccess
+
+# Logs
+application/logs/log-*.php
+!application/logs/index.html
+
+# User-uploaded dynamic media (Persistent storage handled via Docker / VPS host)
+assets/uploads/*
+!assets/uploads/.htaccess
+!assets/uploads/index.html
+!assets/uploads/.gitkeep
+!assets/uploads/pdf/
+assets/uploads/pdf/*
+!assets/uploads/pdf/.htaccess
+!assets/uploads/pdf/index.html
+!assets/uploads/pdf/.gitkeep
+
+assets/img/*
+!assets/img/.htaccess
+!assets/img/index.html
+!assets/img/.gitkeep
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker local overrides
+docker-compose.override.yml

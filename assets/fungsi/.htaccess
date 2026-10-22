@@ -1,0 +1,3 @@
+# Legacy procedural scripts - Block all direct web access
+Order Deny,Allow
+Deny from all

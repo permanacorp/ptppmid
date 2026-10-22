@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ptppmid_app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      # Application Environment
+      - CI_ENV=${CI_ENV:-production}
+      - APP_BASE_URL=${APP_BASE_URL:-}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-}
+
+      # Shared MariaDB Database Connection
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_DRIVER=${DB_DRIVER:-mysqli}
+
+      # SMTP Mail Configuration
+      - SMTP_HOST=${SMTP_HOST:-ssl://smtp.googlemail.com}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_PORT=${SMTP_PORT:-465}
+      - SMTP_CRYPTO=${SMTP_CRYPTO:-ssl}
+
+      # Google reCAPTCHA & Google Maps
+      - RECAPTCHA_SECRET=${RECAPTCHA_SECRET:-}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY:-}
+    volumes:
+      # Persistent volumes for uploaded media, cache, and logs across redeployments
+      - ptppmid_uploads:/var/www/html/assets/uploads
+      - ptppmid_images:/var/www/html/assets/img
+      - ptppmid_cache:/var/www/html/application/cache
+      - ptppmid_logs:/var/www/html/application/logs
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  ptppmid_uploads:
+    name: ptppmid_uploads
+  ptppmid_images:
+    name: ptppmid_images
+  ptppmid_cache:
+    name: ptppmid_cache
+  ptppmid_logs:
+    name: ptppmid_logs
